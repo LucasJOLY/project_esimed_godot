@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhba8oc01ecnt"]
+
+[ext_resource type="PackedScene" uid="uid://ctoenkxklrdyj" path="res://models/characters/paladin/paladin.tscn" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://bwmwq2jnjq8jf" path="res://lib/player.gd" id="1_qhqgy"]
+[ext_resource type="AnimationLibrary" uid="uid://b3myt5j3na8ea" path="res://assets/animations/player.res" id="2_g2els"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g2els"]
+size = Vector3(0.912704, 1.74841, 0.372314)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_qhqgy")
+
+[node name="paladin" parent="." instance=ExtResource("1_3vyb7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="paladin"]
+libraries = {
+&"player": ExtResource("2_g2els")
+}
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85191, 0)
+shape = SubResource("BoxShape3D_g2els")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00423651, 2.63307, -0.251136)
