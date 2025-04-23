@@ -1,8 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://end1p3mkvhyk"]
+[gd_scene load_steps=18 format=3 uid="uid://end1p3mkvhyk"]
 
 [ext_resource type="Script" uid="uid://uon2bg4wd2np" path="res://lib/level_1.gd" id="1_bt44k"]
-[ext_resource type="Material" uid="uid://cdod30iynk7uv" path="res://assets/materials/architecture/PavingStones047.res" id="2_kx6l7"]
+[ext_resource type="PackedScene" uid="uid://msy3e2dbwp46" path="res://models/architecture/dungeon/room_cap.tscn" id="3_bt44k"]
 [ext_resource type="Script" uid="uid://8t42nrcv0s10" path="res://lib/spawn_point.gd" id="3_n46q3"]
+[ext_resource type="PackedScene" uid="uid://d2jtb8aylehn3" path="res://models/architecture/dungeon/hall_x.tscn" id="4_n46q3"]
+[ext_resource type="PackedScene" uid="uid://bmyip1cbgg317" path="res://models/architecture/dungeon/hall_t.tscn" id="5_btoec"]
+[ext_resource type="PackedScene" uid="uid://ce27aov6lpbga" path="res://models/architecture/dungeon/hall_l.tscn" id="6_nmsli"]
+[ext_resource type="PackedScene" uid="uid://jhhge7wjx10t" path="res://models/architecture/dungeon/hall_i.tscn" id="7_betor"]
+[ext_resource type="PackedScene" uid="uid://bi22hq76cvh7g" path="res://models/architecture/dungeon/hall_single.tscn" id="8_vjtdm"]
+[ext_resource type="PackedScene" uid="uid://cksvadsbk1u4" path="res://models/architecture/dungeon/room_i.tscn" id="9_bgw3c"]
+[ext_resource type="PackedScene" uid="uid://b7cfxxbd6msx6" path="res://models/architecture/dungeon/stairs_l.tscn" id="10_lrvbd"]
+[ext_resource type="PackedScene" uid="uid://dilwldie04acj" path="res://models/architecture/dungeon/room_t.tscn" id="11_oqlok"]
+[ext_resource type="PackedScene" uid="uid://j5vglgnns6q" path="res://models/architecture/dungeon/stairs.tscn" id="12_7nvrk"]
+[ext_resource type="PackedScene" uid="uid://cydkhrt5yw0jp" path="res://models/architecture/dungeon/wall_1.tscn" id="13_jkxa6"]
+[ext_resource type="PackedScene" uid="uid://cq4twn6qdx4o4" path="res://models/architecture/dungeon/door.tscn" id="14_betor"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hjc0r"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -17,8 +28,6 @@ sky = SubResource("Sky_aoy15")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aoy15"]
-
 [node name="Level_1" type="Node3D"]
 script = ExtResource("1_bt44k")
 key = "level_1"
@@ -30,13 +39,58 @@ environment = SubResource("Environment_bfsga")
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Floor" type="CSGBox3D" parent="."]
-material_override = ExtResource("2_kx6l7")
-use_collision = true
-size = Vector3(200, 0.1, 200)
-material = SubResource("StandardMaterial3D_aoy15")
-
 [node name="SpawnPoint" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -74.5761, 3.74913, 77.4474)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
 script = ExtResource("3_n46q3")
+metadata/_custom_type_script = "uid://8t42nrcv0s10"
+
+[node name="RoomCap" parent="." instance=ExtResource("3_bt44k")]
+
+[node name="HallX" parent="." instance=ExtResource("4_n46q3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14)
+
+[node name="HallT" parent="." instance=ExtResource("5_btoec")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -14)
+
+[node name="HallL" parent="." instance=ExtResource("6_nmsli")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -27)
+
+[node name="HallL2" parent="." instance=ExtResource("6_nmsli")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 13, 0, -27)
+
+[node name="Hall1" parent="." instance=ExtResource("7_betor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 0)
+
+[node name="HallSingle" parent="." instance=ExtResource("8_vjtdm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -14)
+
+[node name="RoomCap2" parent="." instance=ExtResource("3_bt44k")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -18, 0, -14)
+
+[node name="RoomI" parent="." instance=ExtResource("9_bgw3c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 13)
+
+[node name="StairsL" parent="." instance=ExtResource("10_lrvbd")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 13, 0, 27)
+
+[node name="RoomT" parent="." instance=ExtResource("11_oqlok")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1, 4, 27)
+
+[node name="Stairs" parent="." instance=ExtResource("12_7nvrk")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -13, 0, 27)
+
+[node name="RoomT2" parent="." instance=ExtResource("11_oqlok")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -25, 0, 27)
+
+[node name="Wall1" parent="." instance=ExtResource("13_jkxa6")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -25, 0, 20)
+
+[node name="Door" parent="." instance=ExtResource("14_betor")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -25, 0, 34)
+destination_level = "level_2"
+
+[node name="SpawnPoint2" type="Node3D" parent="."]
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -25, 0, 31)
+script = ExtResource("3_n46q3")
+key = "level_2"
 metadata/_custom_type_script = "uid://8t42nrcv0s10"

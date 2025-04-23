@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dhba8oc01ecnt"]
+[gd_scene load_steps=6 format=3 uid="uid://dhba8oc01ecnt"]
 
 [ext_resource type="PackedScene" uid="uid://ctoenkxklrdyj" path="res://models/characters/paladin/paladin.tscn" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bwmwq2jnjq8jf" path="res://lib/player.gd" id="1_qhqgy"]
@@ -7,20 +7,34 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_g2els"]
 size = Vector3(0.912704, 1.74841, 0.372314)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_qhqgy"]
+size = Vector3(1, 1.71655, 0.832031)
+
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_qhqgy")
 
 [node name="paladin" parent="." instance=ExtResource("1_3vyb7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="paladin"]
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_g2els")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.968986, 0.247117, 0, -0.247117, 0.968986, 0.00423651, 2.03167, 0.816023)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../paladin")
 libraries = {
 &"player": ExtResource("2_g2els")
 }
 
-[node name="CollisionShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85191, 0)
-shape = SubResource("BoxShape3D_g2els")
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 2
 
-[node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00423651, 2.63307, -0.251136)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.998657, -0.774274)
+shape = SubResource("BoxShape3D_qhqgy")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
