@@ -81,7 +81,6 @@ player_interract={
 ]
 }
 
-
 [layer_names]
 
 3d_physics/layer_1="world"
