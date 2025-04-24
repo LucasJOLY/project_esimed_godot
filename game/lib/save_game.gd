@@ -1,7 +1,6 @@
-class_name SaveGame extends Object
+class_name GameSave extends Object
 const DEFAULT_FILENAME:String = "game_save.json"
 func _build():
-
 	return {
 		"current_level": GameState.current_level_key,
 		"position_x": GameState.player.position.x,

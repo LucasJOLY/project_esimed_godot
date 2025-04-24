@@ -1,17 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://brnioroynllgx"]
+[gd_scene load_steps=6 format=3 uid="uid://brnioroynllgx"]
 
 [ext_resource type="Script" uid="uid://uon2bg4wd2np" path="res://lib/level_1.gd" id="1_wcjpl"]
 [ext_resource type="Script" uid="uid://8t42nrcv0s10" path="res://lib/spawn_point.gd" id="2_5orea"]
-[ext_resource type="PackedScene" uid="uid://d2jtb8aylehn3" path="res://models/architecture/dungeon/hall_x.tscn" id="4_w200a"]
-[ext_resource type="PackedScene" uid="uid://bmyip1cbgg317" path="res://models/architecture/dungeon/hall_t.tscn" id="5_uo0vl"]
-[ext_resource type="PackedScene" uid="uid://ce27aov6lpbga" path="res://models/architecture/dungeon/hall_l.tscn" id="6_k2aru"]
-[ext_resource type="PackedScene" uid="uid://jhhge7wjx10t" path="res://models/architecture/dungeon/hall_i.tscn" id="7_ndgrd"]
-[ext_resource type="PackedScene" uid="uid://cksvadsbk1u4" path="res://models/architecture/dungeon/room_i.tscn" id="9_dpc8t"]
-[ext_resource type="PackedScene" uid="uid://b7cfxxbd6msx6" path="res://models/architecture/dungeon/stairs_l.tscn" id="10_ngvhw"]
-[ext_resource type="PackedScene" uid="uid://dilwldie04acj" path="res://models/architecture/dungeon/room_t.tscn" id="11_itbe0"]
-[ext_resource type="PackedScene" uid="uid://j5vglgnns6q" path="res://models/architecture/dungeon/stairs.tscn" id="12_xrja0"]
-[ext_resource type="PackedScene" uid="uid://cydkhrt5yw0jp" path="res://models/architecture/dungeon/wall_1.tscn" id="13_he6wg"]
-[ext_resource type="PackedScene" uid="uid://cq4twn6qdx4o4" path="res://models/architecture/dungeon/door.tscn" id="14_5orea"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hjc0r"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -42,57 +32,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 script = ExtResource("2_5orea")
 key = "level_1"
 metadata/_custom_type_script = "uid://8t42nrcv0s10"
-
-[node name="SpawnPoint2" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
-script = ExtResource("2_5orea")
-metadata/_custom_type_script = "uid://8t42nrcv0s10"
-
-[node name="HallX" parent="." instance=ExtResource("4_w200a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14)
-
-[node name="HallT" parent="." instance=ExtResource("5_uo0vl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -14)
-
-[node name="HallL" parent="." instance=ExtResource("6_k2aru")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -28)
-
-[node name="HallL2" parent="." instance=ExtResource("6_k2aru")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 14, 0, -28)
-
-[node name="Hall1" parent="." instance=ExtResource("7_ndgrd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 0)
-
-[node name="RoomI" parent="." instance=ExtResource("9_dpc8t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 14)
-
-[node name="StairsL" parent="." instance=ExtResource("10_ngvhw")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 14, 0, 28)
-
-[node name="RoomT" parent="." instance=ExtResource("11_itbe0")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 4, 28)
-
-[node name="Stairs" parent="." instance=ExtResource("12_xrja0")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -12, 0, 28)
-
-[node name="RoomT2" parent="." instance=ExtResource("11_itbe0")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -24, 0, 28)
-
-[node name="Wall1" parent="." instance=ExtResource("13_he6wg")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -24, 0, 21)
-
-[node name="RoomT3" parent="." instance=ExtResource("11_itbe0")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="Door" parent="." instance=ExtResource("14_5orea")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 7)
-destination_level = "level_1"
-
-[node name="Wall2" parent="." instance=ExtResource("13_he6wg")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 7, 0, 0)
-
-[node name="Wall3" parent="." instance=ExtResource("13_he6wg")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -24, 0, 35)
-
-[node name="RoomI2" parent="." instance=ExtResource("9_dpc8t")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -14, 0, -14)

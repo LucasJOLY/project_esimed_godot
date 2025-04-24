@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dhba8oc01ecnt"]
+[gd_scene load_steps=5 format=3 uid="uid://dhba8oc01ecnt"]
 
 [ext_resource type="Script" uid="uid://bwmwq2jnjq8jf" path="res://lib/player.gd" id="1_qhqgy"]
-[ext_resource type="AnimationLibrary" uid="uid://b3myt5j3na8ea" path="res://assets/animations/player.res" id="2_g2els"]
-[ext_resource type="PackedScene" uid="uid://du7grohqnoqlp" path="res://models/characters/little_warrior/little_warrior.tscn" id="2_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://bwnpe7b1ytpxu" path="res://models/characters/little_warrior/knight.tscn" id="2_g2els"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g2els"]
 size = Vector3(0.912704, 1.74841, 0.372314)
@@ -13,20 +12,12 @@ size = Vector3(1, 1.71655, 0.832031)
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_qhqgy")
 
-[node name="Knight" parent="." instance=ExtResource("2_qhqgy")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
-
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_g2els")
 
 [node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.968986, 0.247117, 0, -0.247117, 0.968986, 0.00423651, 2.98379, 1.57699)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"player": ExtResource("2_g2els")
-}
+transform = Transform3D(1, 0, 0, 0, 0.968986, 0.247117, 0, -0.247117, 0.968986, 0.00423651, 1.82399, 1.39941)
 
 [node name="Area3D" type="Area3D" parent="."]
 collision_mask = 2
@@ -34,6 +25,9 @@ collision_mask = 2
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.998657, -0.774274)
 shape = SubResource("BoxShape3D_qhqgy")
+
+[node name="Knight" parent="." instance=ExtResource("2_g2els")]
+transform = Transform3D(-0.6, 0, -5.24537e-08, 0, 0.6, 0, 5.24537e-08, 0, -0.6, 0, 0, 0)
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

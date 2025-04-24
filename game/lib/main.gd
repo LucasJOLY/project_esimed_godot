@@ -1,7 +1,7 @@
 extends Node3D
 
 
-var save_game:SaveGame = SaveGame.new()
+var save_game:GameSave = GameSave.new()
 
 
 var current_level_change = null
