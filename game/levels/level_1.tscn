@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://end1p3mkvhyk"]
+[gd_scene load_steps=19 format=3 uid="uid://end1p3mkvhyk"]
 
 [ext_resource type="Script" uid="uid://uon2bg4wd2np" path="res://lib/level_1.gd" id="1_bt44k"]
 [ext_resource type="PackedScene" uid="uid://db6vxsun55xhu" path="res://models/architecture/kit_survie_scenes/rock-b.tscn" id="2_gwceb"]
@@ -10,6 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://d3j658usikt3n" path="res://models/architecture/kit_survie_scenes/tree.tscn" id="8_l53as"]
 [ext_resource type="PackedScene" uid="uid://f1jud7j43rge" path="res://models/architecture/kit_survie_scenes/tree_tall.tscn" id="9_3sk1a"]
 [ext_resource type="PackedScene" uid="uid://cv27qvpg02pqt" path="res://models/architecture/kit_survie_scenes/tree_log.tscn" id="10_08mmt"]
+[ext_resource type="PackedScene" uid="uid://ss0e4xsas7cu" path="res://models/architecture/kit_survie_scenes/campfire-pit.tscn" id="11_betor"]
+[ext_resource type="PackedScene" uid="uid://c6bcq1bwbc5nw" path="res://models/architecture/kit_survie_scenes/campfire_stand.tscn" id="12_vjtdm"]
+[ext_resource type="PackedScene" uid="uid://ch6qtq25wwvvb" path="res://models/architecture/kit_survie_scenes/chest.tscn" id="13_bgw3c"]
+[ext_resource type="PackedScene" uid="uid://cwxidupcrdkif" path="res://models/architecture/kit_survie_scenes/ressource-planks.tscn" id="14_lrvbd"]
+[ext_resource type="PackedScene" uid="uid://boammn1p2rqgp" path="res://models/architecture/kit_survie_scenes/structure-floor.tscn" id="15_vjtdm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hjc0r"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -279,3 +284,48 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -85, 0.1, 22)
 
 [node name="TreeLog" parent="." instance=ExtResource("10_08mmt")]
 transform = Transform3D(7.46705, 0, -7.46705, 0, 10.56, 0, 7.46705, 0, 7.46705, -68, 0.1, -1)
+
+[node name="Campfire-pit" parent="." instance=ExtResource("11_betor")]
+transform = Transform3D(3.44992, 0, 0.0234832, 0, 3.45, 0, -0.0234832, 0, 3.44992, -101.328, 7.86506, 28)
+
+[node name="CampfireStand" parent="." instance=ExtResource("12_vjtdm")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -101.34, 7.57205, 27.951)
+
+[node name="Chest" parent="." instance=ExtResource("13_bgw3c")]
+transform = Transform3D(2.8011, 0, 2.8555, 0, 4, 0, -2.8555, 0, 2.8011, -103.681, 7.80128, 25.8813)
+
+[node name="Ressource-planks" parent="." instance=ExtResource("14_lrvbd")]
+transform = Transform3D(0.817319, 0, -4.93275, 0, 5, 0, 4.93275, 0, 0.817319, -99.7579, 7.82566, 36.0411)
+
+[node name="Ressource-planks3" parent="." instance=ExtResource("14_lrvbd")]
+transform = Transform3D(-2.34938, 0.382309, 4.39707, -0.679208, 4.89056, -0.78812, -4.36109, -0.967625, -2.24602, -99.9911, 7.82566, 34.7158)
+
+[node name="Ressource-planks2" parent="." instance=ExtResource("14_lrvbd")]
+transform = Transform3D(-4.67617, 0, -1.77015, 0, 5, 0, 1.77015, 0, -4.67617, -101.542, 7.82566, 34.5608)
+
+[node name="Rock-a5" parent="." instance=ExtResource("6_l53as")]
+transform = Transform3D(5.72218, 0, 1.80463, 0, 6, 0, -1.80463, 0, 5.72218, -106.371, 7.87, 28.4852)
+
+[node name="Rock-a6" parent="." instance=ExtResource("6_l53as")]
+transform = Transform3D(-0.00900602, 0, 5.99999, 0, 6, 0, -5.99999, 0, -0.00900602, -105.727, 7.87, 29.8115)
+
+[node name="Rock-b2" parent="." instance=ExtResource("2_gwceb")]
+transform = Transform3D(2.09568, 0, -4.53962, 0, 5, 0, 4.53962, 0, 2.09568, -104.475, 7.87, 31.2428)
+
+[node name="Rock-c3" parent="." instance=ExtResource("7_3sk1a")]
+transform = Transform3D(-2.58908, 0, 3.04905, 0, 4, 0, -3.04905, 0, -2.58908, -103.83, 7.72423, 33.3207)
+
+[node name="Rock-c4" parent="." instance=ExtResource("7_3sk1a")]
+transform = Transform3D(-2.58908, 0, 3.04905, 0, 4, 0, -3.04905, 0, -2.58908, -100.441, 7.84755, 37.7017)
+
+[node name="Rock-c5" parent="." instance=ExtResource("7_3sk1a")]
+transform = Transform3D(-1.02725, 0, 3.86585, 0, 4, 0, -3.86585, 0, -1.02725, -102.274, 7.72939, 35.5396)
+
+[node name="Structure-floor" parent="." instance=ExtResource("15_vjtdm")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -84.3305, -1.83265, 29.3326)
+
+[node name="Structure-floor2" parent="." instance=ExtResource("15_vjtdm")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -87.4141, -0.789916, 26.2443)
+
+[node name="Structure-floor3" parent="." instance=ExtResource("15_vjtdm")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -90.9819, -0.0791395, 21.0509)

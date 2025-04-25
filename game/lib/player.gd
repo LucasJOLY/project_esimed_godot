@@ -1,4 +1,4 @@
-extends CharacterBody3D
+class_name Player extends CharacterBody3D
 
 
 const SPEED = 5.0
@@ -40,12 +40,6 @@ func _unhandled_input(event):
 		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
 		camera.rotation.x = clampf(camera.rotation.x, -MAX_CAMERA_ANGLE_UP, MAX_CAMERA_ANGLE_DOWN)
-
-	elif event is InputEventKey and Input.is_action_just_pressed("cancel"):
-		if mouse_captured:
-			release_mouse()
-		else:
-			capture_mouse()
 
 	if Input.is_action_just_pressed("player_attack"):
 		print("Attaque !")
