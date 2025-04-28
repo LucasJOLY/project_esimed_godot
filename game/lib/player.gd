@@ -42,12 +42,9 @@ func _unhandled_input(event):
 		camera.rotation.x = clampf(camera.rotation.x, -MAX_CAMERA_ANGLE_UP, MAX_CAMERA_ANGLE_DOWN)
 
 	if Input.is_action_just_pressed("player_attack"):
-		print("Attaque !")
 		anim_tree.set("parameters/attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 
 	if Input.is_action_just_pressed("player_block"):
-		print("Parade !")
-		
 		var current_state = anim_tree.get("parameters/is_blocking/current_state")
 		if current_state == "true":
 			anim_tree.set("parameters/is_blocking/transition_request", "false")
@@ -55,6 +52,7 @@ func _unhandled_input(event):
 			anim_tree.set("parameters/is_blocking/transition_request", "true")
 
 func _physics_process(delta: float) -> void:
+	SimpleGrass.set_player_position(global_position)
 
 	# Appliquer la gravité si pas au sol
 	if not is_on_floor():
@@ -96,21 +94,16 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	if is_on_floor():
-		print("on floor")
 		anim_tree.set("parameters/in_air/transition_request", "false")
 		if(input_dir.x != 0 or input_dir.y != 0) and can_move:
 			if input_dir.y > 0:  # Si on va vers l'arrière
-				print("walk_backward")
 				anim_tree.set("parameters/movements/transition_request", "walk_backward")
 			else:
 				if(Input.is_action_pressed("player_run")):
-					print("run")
 					anim_tree.set("parameters/movements/transition_request", "run")
 				else:
-					print("walk")
 					anim_tree.set("parameters/movements/transition_request", "walk")
 		else:
-			print("idle")
 			anim_tree.set("parameters/movements/transition_request", "idle")
 
 	move_and_slide()

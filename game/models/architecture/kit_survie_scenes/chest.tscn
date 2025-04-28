@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=4 uid="uid://ch6qtq25wwvvb"]
+[gd_scene load_steps=13 format=4 uid="uid://ch6qtq25wwvvb"]
 
 [ext_resource type="Texture2D" uid="uid://dyr3lq22th74q" path="res://models/architecture/kit_survie/Textures/colormap.png" id="1_dccwm"]
+[ext_resource type="Script" uid="uid://c8unh7smknyrd" path="res://lib/chest.gd" id="1_rqsbp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jwgsm"]
 resource_name = "colormap"
@@ -119,6 +120,8 @@ _data = {
 }
 
 [node name="Chest" type="StaticBody3D"]
+collision_layer = 3
+script = ExtResource("1_rqsbp")
 
 [node name="chest" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_rqsbp")

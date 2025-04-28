@@ -5,6 +5,7 @@ class_name Level_1 extends Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	SimpleGrass.set_interactive(true);
 	pass # Replace with function body.
 
 

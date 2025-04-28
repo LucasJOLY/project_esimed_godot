@@ -9,6 +9,10 @@ func _build():
 		"rotation_x": GameState.player.rotation.x,
 		"rotation_y": GameState.player.rotation.y,
 		"rotation_z": GameState.player.rotation.z,
+		"has_castle_key": GameState.has_castle_key,
+		"collected_items": GameState.collected_items,
+		"bottle_count": GameState.bottle_count,
+		"food_count": GameState.food_count
 	}
 
 func save_game():
@@ -27,3 +31,7 @@ func load_game():
 		GameState.current_level_key = data.get("current_level", GameState.current_level_key)
 		GameState.player.position = Vector3(data.get("position_x", GameState.player.position.x), data.get("position_y", GameState.player.position.y), data.get("position_z", GameState.player.position.z))
 		GameState.player.rotation = Vector3(data.get("rotation_x", GameState.player.rotation.x), data.get("rotation_y", GameState.player.rotation.y), data.get("rotation_z", GameState.player.rotation.z))
+		GameState.has_castle_key = data.get("has_castle_key", false)
+		GameState.collected_items = data.get("collected_items", [])
+		GameState.bottle_count = data.get("bottle_count", 0)
+		GameState.food_count = data.get("food_count", 0)
