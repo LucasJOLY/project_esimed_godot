@@ -1,10 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://cnfronwmjmdjr"]
+[gd_scene load_steps=3 format=3 uid="uid://8v5h0ijvrw8b"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_lla53"]
-size = Vector3(1.9978, 12.535, 0.203613)
+[sub_resource type="PlaneMesh" id="PlaneMesh_lla53"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_lla53"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
 [node name="InvisibleWall" type="StaticBody3D"]
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+layers = 65536
+mesh = SubResource("PlaneMesh_lla53")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00354004, 2.57687, 0.0202637)
-shape = SubResource("BoxShape3D_lla53")
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lla53")
