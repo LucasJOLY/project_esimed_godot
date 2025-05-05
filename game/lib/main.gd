@@ -18,6 +18,17 @@ var current_level_change = null
 @onready var menu:Control = $Menu
 @onready var player:Player = $Player
 
+
+@onready var level_hud:Label = $HUD/LevelInfo/Text
+
+@onready var exp_bar:ProgressBar = $HUD/ExpBar
+
+
+@onready var health_container:Control = $HUD/HealthControl
+
+
+
+
 var is_paused = false
 
 # Called when the node enters the scene tree for the first time.
@@ -30,7 +41,23 @@ func _ready() -> void:
 	save_game.load_game()
 	_enter_level("default", GameState.current_level_key, GameState.player.position == Vector3.ZERO)
 
+	level_hud.text = str(GameState.level)
+	exp_bar.value = GameState.experience
+	_update_health_display()
 
+func _update_health_display() -> void:
+	# Afficher les cœurs en fonction du niveau maximum actuel
+	for i in range(1, 11):  # On parcourt tous les cœurs possibles (1 à 10)
+		var full_heart = health_container.get_node("Heath_Full" + str(i)) as TextureRect
+		var empty_heart = health_container.get_node("Heath_Empty" + str(i)) as TextureRect
+		
+		if full_heart and empty_heart:
+			if i <= GameState.max_hearth:  # Si le cœur est débloqué
+				full_heart.visible = i <= GameState.current_hearth
+				empty_heart.visible = i > GameState.current_hearth
+			else:  # Si le cœur n'est pas encore débloqué
+				full_heart.visible = false
+				empty_heart.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if(not get_tree().paused):
@@ -94,3 +121,21 @@ func _unpause_game() -> void:
 func _on_button_unpause_pressed() -> void:
 	_unpause_game()
 	pass # Replace with function body.
+
+func take_damage(amount: int) -> void:
+	GameState.current_hearth = max(0, GameState.current_hearth - amount)
+	_update_health_display()
+
+func heal(amount: int) -> void:
+	GameState.current_hearth = min(GameState.max_hearth, GameState.current_hearth + amount)
+	_update_health_display()
+
+func level_up() -> void:
+	_update_health_display()
+
+func show_text_info(text: String) -> void:
+	text_info.visible = true
+	label_infos.text = text
+	# Créer un timer pour masquer le message après 3 secondes
+	var timer = get_tree().create_timer(3.0)
+	timer.timeout.connect(func(): text_info.visible = false)

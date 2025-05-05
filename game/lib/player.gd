@@ -19,6 +19,13 @@ var mouse_captured:bool = false
 
 
 
+@onready var big_sword = $"Knight/Rig/Skeleton3D/2H_Sword"
+@onready var big_shield = $"Knight/Rig/Skeleton3D/Rectangle_Shield"
+@onready var small_sword = $"Knight/Rig/Skeleton3D/1H_Sword"
+@onready var small_shield = $"Knight/Rig/Skeleton3D/Round_Shield"
+
+@onready var main_scene: Node3D = get_tree().root.get_node("Main")
+
 func _ready():
 	capture_mouse()
 
@@ -52,6 +59,20 @@ func _unhandled_input(event):
 			anim_tree.set("parameters/is_blocking/transition_request", "true")
 
 func _physics_process(delta: float) -> void:
+	if GameState.has_big_sword:
+		big_sword.visible = true
+		small_sword.visible = false
+	else:
+		big_sword.visible = false
+		small_sword.visible = true
+
+	if GameState.has_big_shield:
+		big_shield.visible = true
+		small_shield.visible = false
+	else:
+		big_shield.visible = false
+		small_shield.visible = true
+
 	SimpleGrass.set_player_position(global_position)
 
 	# Appliquer la gravité si pas au sol
@@ -116,3 +137,31 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
 	interaction_released.emit(body)
+
+
+
+
+
+
+# système de niveau
+
+func gain_experience(amount: int) -> void:
+	GameState.experience += amount
+	while GameState.experience >= GameState.experience_to_next_level:
+		main_scene.exp_bar.value = GameState.experience
+		GameState.experience -= GameState.experience_to_next_level
+		level_up()
+
+
+func level_up() -> void:
+	if GameState.level < GameState.limit_level:
+		main_scene.level_hud.text = str(GameState.level + 1)
+		main_scene.level_up()
+		GameState.level += 1
+		GameState.experience_to_next_level = int(GameState.experience_to_next_level * 1.5)  # XP nécessaire augmente à chaque niveau
+
+		# Bonus de stats équilibrés
+		GameState.attack_power += 2
+		GameState.defense_power += 1
+		GameState.max_hearth += 1
+		GameState.current_hearth = GameState.max_hearth  # Soigne au max à chaque level-up

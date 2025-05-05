@@ -36,3 +36,17 @@ func _on_dark_zone_body_exited(body: Node3D) -> void:
 		target_fog_density = 0.0005
 		target_fog_sky_affect = 0.2
 		target_fog_light_energy = 1.0
+
+
+func _on_dark_zone_2_body_entered(body: Node3D) -> void:
+	if body.name == "Player" && GameState.is_castle_completed == false:
+		target_fog_density = 0.2
+		target_fog_sky_affect = 1.0
+		target_fog_light_energy = 0.1
+
+
+func _on_dark_zone_2_body_exited(body: Node3D) -> void:
+	if body.name == "Player":
+		target_fog_density = 0.0005
+		target_fog_sky_affect = 0.2
+		target_fog_light_energy = 1.0

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8ucldos5wcf3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0w34t"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0w34t"]
+
+[node name="Teleporter" type="StaticBody3D"]
+collision_layer = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_0w34t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 65536
+mesh = SubResource("BoxMesh_0w34t")
