@@ -17,7 +17,8 @@ func _build():
 		"bottle_count": GameState.bottle_count,
 		"food_count": GameState.food_count,
 		"has_big_sword": GameState.has_big_sword,
-		"has_big_shield": GameState.has_big_shield
+		"has_big_shield": GameState.has_big_shield,
+		"killed_ids": GameState.killed_ids
 	}
 
 func save_game():
@@ -45,3 +46,4 @@ func load_game():
 		GameState.food_count = data.get("food_count", 0)
 		GameState.has_big_sword = data.get("has_big_sword", false)
 		GameState.has_big_shield = data.get("has_big_shield", false)
+		GameState.killed_ids = data.get("killed_ids", [])

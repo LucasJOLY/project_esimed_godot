@@ -110,6 +110,8 @@ player_quit_discussion={
 
 3d_physics/layer_1="world"
 3d_physics/layer_2="level_1"
+3d_physics/layer_3="player"
+3d_physics/layer_5="enemie"
 
 [rendering]
 

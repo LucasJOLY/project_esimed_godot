@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://h6my6flrkuwa"]
+
+[ext_resource type="Script" uid="uid://ctolnvntjntni" path="res://lib/squeleton_minion.gd" id="1_5w3kd"]
+[ext_resource type="PackedScene" uid="uid://8kxjpcpoolwi" path="res://models/characters/skeletons/skeleton_minion.tscn" id="1_75wn0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5w3kd"]
+size = Vector3(1.32959, 2.15601, 0.931885)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_75wn0"]
+radius = 9.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rludu"]
+size = Vector3(1, 1, 1.31139)
+
+[node name="Minion" type="CharacterBody3D" groups=["enemie"]]
+collision_layer = 17
+script = ExtResource("1_5w3kd")
+spawn_type = "awaken"
+attack_area_path = NodePath("AttackArea")
+
+[node name="Skeleton_Minion" parent="." instance=ExtResource("1_75wn0")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0202637, 1.07385, 0.00283027)
+shape = SubResource("BoxShape3D_5w3kd")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_75wn0")
+
+[node name="AttackArea" type="Area3D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.881132, 0.354774)
+shape = SubResource("BoxShape3D_rludu")

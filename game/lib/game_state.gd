@@ -31,6 +31,9 @@ var has_big_sword: bool = false
 var has_big_shield: bool = false
 
 
+var killed_ids: Array = []
+
+
 
 
 var level: int = 1

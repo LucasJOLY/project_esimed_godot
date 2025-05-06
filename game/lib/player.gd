@@ -24,10 +24,27 @@ var mouse_captured:bool = false
 @onready var small_sword = $"Knight/Rig/Skeleton3D/1H_Sword"
 @onready var small_shield = $"Knight/Rig/Skeleton3D/Round_Shield"
 
+
+@onready var small_sword_area = $"Knight/Rig/Skeleton3D/1H_Sword/SwordArea"
+@onready var big_sword_area = $"Knight/Rig/Skeleton3D/2H_Sword/SwordArea"
+
 @onready var main_scene: Node3D = get_tree().root.get_node("Main")
 
 func _ready():
+	if(GameState.has_big_sword):
+		big_sword_area.monitoring = false
+		big_sword_area.body_entered.connect(_on_sword_hit)
+	else:
+		small_sword_area.monitoring = false
+		small_sword_area.body_entered.connect(_on_sword_hit)
 	capture_mouse()
+
+func _on_sword_hit(body: Node):
+	print("sword hit")
+	if body.collision_layer == 5: # Layer 2 pour les ennemis
+		print("enemie hit")
+		if body.has_method("take_damage"):
+			body.take_damage(GameState.attack_power)
 
 
 
@@ -50,6 +67,16 @@ func _unhandled_input(event):
 
 	if Input.is_action_just_pressed("player_attack"):
 		anim_tree.set("parameters/attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+		if(GameState.has_big_sword):
+			await get_tree().create_timer(0.3).timeout  # attendre avant d’activer (calé avec l'animation)
+			big_sword_area.monitoring = true
+			await get_tree().create_timer(0.2).timeout  # temps de frappe actif
+			big_sword_area.monitoring = false
+		else:
+			await get_tree().create_timer(0.3).timeout  # attendre avant d’activer (calé avec l'animation)
+			small_sword_area.monitoring = true
+			await get_tree().create_timer(0.2).timeout  # temps de frappe actif
+			small_sword_area.monitoring = false
 
 	if Input.is_action_just_pressed("player_block"):
 		var current_state = anim_tree.get("parameters/is_blocking/current_state")
@@ -137,6 +164,15 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
 	interaction_released.emit(body)
+
+
+
+func take_damage(amount: int) -> void:
+	GameState.current_hearth -= amount
+	main_scene._update_health_display()
+	if GameState.current_hearth <= 0:
+		GameState.current_hearth = 0
+
 
 
 
