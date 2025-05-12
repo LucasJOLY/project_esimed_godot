@@ -82,10 +82,10 @@ stretch_mode = 5
 
 [node name="SBG_Minimap" type="TextureRect" parent="HUD"]
 layout_mode = 0
-offset_left = 1546.0
-offset_top = 63.0
-offset_right = 1848.0
-offset_bottom = 341.0
+offset_left = 1544.0
+offset_top = 72.0
+offset_right = 1846.0
+offset_bottom = 350.0
 texture = ExtResource("5_tefeu")
 stretch_mode = 5
 

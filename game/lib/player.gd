@@ -30,7 +30,12 @@ var mouse_captured:bool = false
 
 @onready var main_scene: Node3D = get_tree().root.get_node("Main")
 
+
+
+var dead:bool = false
+
 func _ready():
+	anim_tree.set("parameters/death/transition_request", "false")
 	if(GameState.has_big_sword):
 		big_sword_area.monitoring = false
 		big_sword_area.body_entered.connect(_on_sword_hit)
@@ -60,25 +65,25 @@ func release_mouse() -> void:
 
 
 func _unhandled_input(event):
-	if event is InputEventMouseMotion and mouse_captured:
+	if event is InputEventMouseMotion and mouse_captured and dead == false:
 		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
 		camera.rotation.x = clampf(camera.rotation.x, -MAX_CAMERA_ANGLE_UP, MAX_CAMERA_ANGLE_DOWN)
 
-	if Input.is_action_just_pressed("player_attack"):
+	if Input.is_action_just_pressed("player_attack") and dead == false:
 		anim_tree.set("parameters/attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		if(GameState.has_big_sword):
-			await get_tree().create_timer(0.3).timeout  # attendre avant d’activer (calé avec l'animation)
+			await get_tree().create_timer(0.3).timeout  # attendre avant d'activer (calé avec l'animation)
 			big_sword_area.monitoring = true
 			await get_tree().create_timer(0.2).timeout  # temps de frappe actif
 			big_sword_area.monitoring = false
 		else:
-			await get_tree().create_timer(0.3).timeout  # attendre avant d’activer (calé avec l'animation)
+			await get_tree().create_timer(0.3).timeout  # attendre avant d'activer (calé avec l'animation)
 			small_sword_area.monitoring = true
 			await get_tree().create_timer(0.2).timeout  # temps de frappe actif
 			small_sword_area.monitoring = false
 
-	if Input.is_action_just_pressed("player_block"):
+	if Input.is_action_just_pressed("player_block") and dead == false:
 		var current_state = anim_tree.get("parameters/is_blocking/current_state")
 		if current_state == "true":
 			anim_tree.set("parameters/is_blocking/transition_request", "false")
@@ -100,6 +105,7 @@ func _physics_process(delta: float) -> void:
 		big_shield.visible = false
 		small_shield.visible = true
 
+
 	SimpleGrass.set_player_position(global_position)
 
 	# Appliquer la gravité si pas au sol
@@ -108,7 +114,7 @@ func _physics_process(delta: float) -> void:
 		anim_tree.set("parameters/in_air/transition_request", "true")
 
 	# Déclenche le saut uniquement si on est au sol
-	if Input.is_action_just_pressed("player_jump") and is_on_floor():
+	if Input.is_action_just_pressed("player_jump") and is_on_floor() and dead == false:
 		velocity.y = JUMP_VELOCITY
 
 	# Mouvement horizontal
@@ -118,7 +124,7 @@ func _physics_process(delta: float) -> void:
 	# Vérifier si une animation one-shot est en cours
 	var is_attacking = anim_tree.get("parameters/attack/active") == true
 	var is_blocking = anim_tree.get("parameters/is_blocking/current_state") == "true"
-	var can_move = not (is_attacking or is_blocking)
+	var can_move = not (is_attacking or is_blocking or dead)
 
 	if direction and can_move:
 		var speed_multiplier = 1.0
@@ -172,12 +178,15 @@ func take_damage(amount: int) -> void:
 	main_scene._update_health_display()
 	if GameState.current_hearth <= 0:
 		GameState.current_hearth = 0
+		die()
 
 
 
 
-
-
+func die() -> void:
+	dead = true
+	anim_tree.set("parameters/death/transition_request", "true")
+	
 
 # système de niveau
 

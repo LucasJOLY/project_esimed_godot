@@ -15,8 +15,6 @@ size = Vector3(1, 1, 1.31139)
 [node name="Minion" type="CharacterBody3D" groups=["enemie"]]
 collision_layer = 17
 script = ExtResource("1_5w3kd")
-spawn_type = "awaken"
-attack_area_path = NodePath("AttackArea")
 
 [node name="Skeleton_Minion" parent="." instance=ExtResource("1_75wn0")]
 
