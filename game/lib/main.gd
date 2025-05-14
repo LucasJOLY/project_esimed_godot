@@ -3,6 +3,8 @@ extends Node3D
 
 var save_game:GameSave = GameSave.new()
 
+const DEFAULT_FILENAME:String = "game_save.json"
+
 
 var current_level_change = null
 
@@ -14,8 +16,25 @@ var current_level_change = null
 @onready var disussion_quit_text:Label = $HUD/Discussion/Quit/Quit
 @onready var disussion_name:Label = $HUD/Discussion/DiscussionName/Label
 
+@onready var count_drink:Label = $HUD/DrinkControl/Info/Text
+@onready var count_food:Label = $HUD/FoodControl/Info/Text
+
 
 @onready var menu:Control = $Menu
+
+@onready var hud:Control = $HUD
+
+@onready var death_screen:Control = $DeathScreen
+@onready var death_screen_new_game_button:Button = $DeathScreen/TextureRect4/ButtonNewGame/Button
+@onready var death_screen_quit_button:Button = $DeathScreen/TextureRect4/ButtonQuitImage/ButtonQuit
+
+@onready var start_screen:Control = $StartScreen
+@onready var start_screen_new_game_button:Button = $StartScreen/TextureRect4/ButtonNewGame/Button
+@onready var start_screen_load_game:TextureRect = $StartScreen/TextureRect4/ButtonReplayGame
+@onready var start_screen_load_game_button:Button = $StartScreen/TextureRect4/ButtonReplayGame/Button
+@onready var start_screen_quit_button:Button = $StartScreen/TextureRect4/ButtonQuitImage/ButtonQuit
+
+
 @onready var player:Player = $Player
 
 
@@ -33,11 +52,27 @@ var is_paused = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# capture la souris
+	player.release_mouse()
 	SimpleGrass.set_interactive(true)
 	disussion_box.visible = false
 	menu.visible = false
+	hud.visible = false
+	handle_hud()
 	text_info.visible = false
-	GameState.player = $Player;
+	death_screen.visible = false
+	start_screen.visible = true
+	GameState.player = $Player
+	
+	# Vérifie si une sauvegarde existe
+	var save_file = FileAccess.open(DEFAULT_FILENAME, FileAccess.READ)
+	if save_file:
+		start_screen_load_game.visible = true
+		save_file.close()
+	else:
+		start_screen_load_game.visible = false
+	
+	
 	save_game.load_game()
 	_enter_level("default", GameState.current_level_key, GameState.player.position == Vector3.ZERO)
 
@@ -122,13 +157,7 @@ func _on_button_unpause_pressed() -> void:
 	_unpause_game()
 	pass # Replace with function body.
 
-func take_damage(amount: int) -> void:
-	GameState.current_hearth = max(0, GameState.current_hearth - amount)
-	_update_health_display()
 
-func heal(amount: int) -> void:
-	GameState.current_hearth = min(GameState.max_hearth, GameState.current_hearth + amount)
-	_update_health_display()
 
 func level_up() -> void:
 	_update_health_display()
@@ -139,3 +168,45 @@ func show_text_info(text: String) -> void:
 	# Créer un timer pour masquer le message après 3 secondes
 	var timer = get_tree().create_timer(3.0)
 	timer.timeout.connect(func(): text_info.visible = false)
+
+func _on_start_screen_new_game_pressed() -> void:
+	_reset_game_state()
+	start_screen.visible = false
+	hud.visible = true
+	player.capture_mouse()
+
+	get_tree().paused = false
+
+func _on_start_screen_load_game_pressed() -> void:
+	start_screen.visible = false
+	hud.visible = true
+	handle_hud()
+	player.capture_mouse()
+	get_tree().paused = false
+
+func _on_death_screen_new_game_pressed() -> void:
+	_reset_game_state()
+	death_screen.visible = false
+	hud.visible = true
+	player.capture_mouse()
+	handle_hud()
+	get_tree().paused = false
+
+func _reset_game_state() -> void:
+	save_game.load_game(true)
+	GameState.player._ready()
+	
+	_enter_level("default", GameState.current_level_key, true)
+	level_hud.text = str(GameState.level)
+	exp_bar.value = GameState.experience
+	_update_health_display()
+
+func _on_start_screen_quit_pressed() -> void:
+	get_tree().quit()
+
+func _on_death_screen_quit_pressed() -> void:
+	get_tree().quit()
+
+func handle_hud() -> void:
+	count_drink.text = str(GameState.bottle_count)
+	count_food.text = str(GameState.food_count)

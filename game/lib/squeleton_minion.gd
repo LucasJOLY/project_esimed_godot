@@ -15,6 +15,8 @@ extends CharacterBody3D
 @onready var anim_player = $Skeleton_Minion/AnimationPlayer
 @onready var player = GameState.player
 
+@onready var health_bar: ProgressBar = $Sprite3D2/HealthBarViewport/HealthBar/ProgressBar
+
 
 
 @onready var attack_area: Area3D = $AttackArea
@@ -25,6 +27,9 @@ var is_attacking = false
 var has_spawned = false
 
 func _ready():
+	# set la max value de la bar en fonction de la health
+	health_bar.max_value = health
+	health_bar.value = health
 	if GameState.killed_ids.has(skeleton_id):
 		queue_free()
 		return
@@ -118,6 +123,7 @@ func _on_attack_area_hit(body: Node):
 func take_damage(amount: int):
 	if is_dead: return
 	health -= amount
+	health_bar.value = health
 	if health <= 0:
 		die()
 

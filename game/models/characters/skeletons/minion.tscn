@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://h6my6flrkuwa"]
+[gd_scene load_steps=11 format=3 uid="uid://h6my6flrkuwa"]
 
 [ext_resource type="Script" uid="uid://ctolnvntjntni" path="res://lib/squeleton_minion.gd" id="1_5w3kd"]
 [ext_resource type="PackedScene" uid="uid://8kxjpcpoolwi" path="res://models/characters/skeletons/skeleton_minion.tscn" id="1_75wn0"]
+[ext_resource type="Texture2D" uid="uid://1dg7328jhw45" path="res://assets/UI/kenney_ui-pack-adventure/Vector/minimap_icon_exclamation_red.svg" id="3_rludu"]
+[ext_resource type="FontFile" uid="uid://qrj2h620hcb3" path="res://assets/Fonts/Marcellus/Marcellus-Regular.ttf" id="4_rfd2g"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5w3kd"]
 size = Vector3(1.32959, 2.15601, 0.931885)
@@ -12,7 +14,27 @@ radius = 9.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_rludu"]
 size = Vector3(1, 1, 1.31139)
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_rludu"]
+viewport_path = NodePath("Sprite3D2/HealthBarViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfd2g"]
+bg_color = Color(0.393086, 0.393086, 0.393085, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rludu"]
+bg_color = Color(3.85046e-07, 0.726626, 0.154731, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 20
+
 [node name="Minion" type="CharacterBody3D" groups=["enemie"]]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
 collision_layer = 17
 script = ExtResource("1_5w3kd")
 
@@ -34,3 +56,35 @@ collision_mask = 3
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.881132, 0.354774)
 shape = SubResource("BoxShape3D_rludu")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-30, 4.52987e-06, -1.98007e-13, 0, -1.31134e-06, -30, -4.52987e-06, -30, 1.31134e-06, 0, 63.2025, 0)
+layers = 512
+texture = ExtResource("3_rludu")
+
+[node name="Sprite3D2" type="Sprite3D" parent="."]
+texture = SubResource("ViewportTexture_rludu")
+
+[node name="HealthBarViewport" type="SubViewport" parent="Sprite3D2"]
+transparent_bg = true
+size = Vector2i(230, 522)
+
+[node name="HealthBar" type="Control" parent="Sprite3D2/HealthBarViewport"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="Sprite3D2/HealthBarViewport/HealthBar"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_rfd2g")
+theme_override_styles/background = SubResource("StyleBoxFlat_rfd2g")
+theme_override_styles/fill = SubResource("StyleBoxFlat_rludu")
+value = 50.0
+rounded = true

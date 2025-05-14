@@ -40,6 +40,7 @@ func _on_player_interaction_released(node: Node3D):
 
 func _process(_delta):
 	if player_in_range and Input.is_action_just_pressed("player_interract"):
+		player.interract_with_item()
 		if GameState.get(key_type):
 			if animation_player.is_playing() == false:
 				if is_open == false:

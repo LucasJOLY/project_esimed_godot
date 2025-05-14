@@ -26,7 +26,14 @@ func save_game():
 	if(save != null):
 		save.store_line(JSON.stringify(_build()))
 
-func load_game():
+func load_game(reset_game:bool = false):
+	if reset_game:
+		if FileAccess.file_exists(DEFAULT_FILENAME):
+			var dir = DirAccess.open("res://")
+			dir.remove(DEFAULT_FILENAME)
+		GameState.reset_game()
+		return
+	
 	var save = FileAccess.open(DEFAULT_FILENAME, FileAccess.READ)
 	if(save != null):
 		var json:JSON = JSON.new()
@@ -47,3 +54,4 @@ func load_game():
 		GameState.has_big_sword = data.get("has_big_sword", false)
 		GameState.has_big_shield = data.get("has_big_shield", false)
 		GameState.killed_ids = data.get("killed_ids", [])
+		

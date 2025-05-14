@@ -40,7 +40,9 @@ func _ready():
 
 func _process(_delta):
 	if player_in_range and Input.is_action_just_pressed("player_interract"):
+
 		if not is_open:
+			player.interract_with_item()
 			open_chest()
 
 func _on_timer_timeout():
@@ -83,4 +85,3 @@ func _on_player_interaction_released(node: Node3D) -> void:
 	if node == self:
 		player_in_range = false
 		main_scene.text_info.visible = false
-

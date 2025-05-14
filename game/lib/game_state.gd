@@ -52,3 +52,25 @@ var current_hearth: int = 5
 
 
 var is_castle_completed: bool = false
+
+
+func reset_game():
+	current_level_key = "level_1"
+	has_castle_key = false
+	has_castle_key_2 = false
+	has_graveyard_key = false
+	has_graveyard_key_2 = false
+	collected_items = []
+	bottle_count = 0
+	food_count = 0
+	has_big_sword = false
+	has_big_shield = false
+	killed_ids = []
+	level = 1
+	experience = 0
+	experience_to_next_level = 100
+	attack_power = 10
+	defense_power = 5
+	max_hearth = 5
+	current_hearth = 5
+	is_castle_completed = false

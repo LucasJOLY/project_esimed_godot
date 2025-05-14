@@ -35,6 +35,7 @@ var mouse_captured:bool = false
 var dead:bool = false
 
 func _ready():
+	dead = false
 	anim_tree.set("parameters/death/transition_request", "false")
 	if(GameState.has_big_sword):
 		big_sword_area.monitoring = false
@@ -106,6 +107,7 @@ func _physics_process(delta: float) -> void:
 		small_shield.visible = true
 
 
+
 	SimpleGrass.set_player_position(global_position)
 
 	# Appliquer la gravité si pas au sol
@@ -124,7 +126,14 @@ func _physics_process(delta: float) -> void:
 	# Vérifier si une animation one-shot est en cours
 	var is_attacking = anim_tree.get("parameters/attack/active") == true
 	var is_blocking = anim_tree.get("parameters/is_blocking/current_state") == "true"
+	var is_using_item = anim_tree.get("parameters/use_item/active") == true
 	var can_move = not (is_attacking or is_blocking or dead)
+
+	if !is_attacking && !is_blocking && !dead && !is_using_item:
+		if Input.is_action_just_pressed("player_use_item1"):
+			use_item("bottle")
+		elif Input.is_action_just_pressed("player_use_item2"):
+			use_item("food")
 
 	if direction and can_move:
 		var speed_multiplier = 1.0
@@ -172,8 +181,30 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 	interaction_released.emit(body)
 
 
+func use_item(item: String) -> void:
+	if item == "bottle":
+		if GameState.bottle_count > 0:
+			GameState.current_hearth = GameState.max_hearth
+			GameState.bottle_count -= 1	
+			main_scene._update_health_display()
+			main_scene.handle_hud()
+	elif item == "food":
+		if GameState.food_count > 0:
+			GameState.food_count -= 1
+			GameState.current_hearth += 1
+			main_scene._update_health_display()
+			main_scene.handle_hud()
+	anim_tree.set("parameters/use_item/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+
+func interract_with_item() -> void:
+		anim_tree.set("parameters/interract/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+
+
 
 func take_damage(amount: int) -> void:
+	var is_blocking = anim_tree.get("parameters/is_blocking/current_state") == "true"
+	if is_blocking:
+		return;
 	GameState.current_hearth -= amount
 	main_scene._update_health_display()
 	if GameState.current_hearth <= 0:
@@ -182,12 +213,18 @@ func take_damage(amount: int) -> void:
 
 
 
-
 func die() -> void:
 	dead = true
 	anim_tree.set("parameters/death/transition_request", "true")
+	release_mouse()
+	main_scene.death_screen.visible = true
+	main_scene.hud.visible = false
 	
 
+func collect_item() -> void:
+	# déclenche l'anim avec un oneshot
+	anim_tree.set("parameters/collect_item/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+	main_scene.handle_hud()
 # système de niveau
 
 func gain_experience(amount: int) -> void:
