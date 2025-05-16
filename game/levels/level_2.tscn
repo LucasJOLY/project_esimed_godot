@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://brnioroynllgx"]
+[gd_scene load_steps=48 format=3 uid="uid://brnioroynllgx"]
 
 [ext_resource type="Script" uid="uid://c0pfprssslcir" path="res://lib/level.gd" id="1_bf7t1"]
 [ext_resource type="Script" uid="uid://8t42nrcv0s10" path="res://lib/spawn_point.gd" id="2_5orea"]
@@ -45,6 +45,7 @@
 [ext_resource type="PackedScene" uid="uid://djvyq2f1dbhql" path="res://models/architecture/dungeon_scenes/sword_shield_gold.tscn" id="43_6bdx5"]
 [ext_resource type="PackedScene" uid="uid://qjoctxygdwj2" path="res://models/architecture/dungeon_scenes/banner_triple_red.tscn" id="44_qthv2"]
 [ext_resource type="PackedScene" uid="uid://x4jgm0sa5lmm" path="res://models/architecture/dungeon_scenes/banner_shield_red.tscn" id="45_wnekv"]
+[ext_resource type="PackedScene" uid="uid://dfhao2jjr1cyc" path="res://models/architecture/dungeon_scenes/pillar_decorated.tscn" id="46_qthv2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6bdx5"]
 size = Vector3(22, 20, 21)
@@ -2079,24 +2080,6 @@ gain_experience = 50
 [node name="pillar_decorated2" parent="." instance=ExtResource("14_ndgrd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -94, -16, -4)
 
-[node name="pillar_decorated10" parent="." instance=ExtResource("14_ndgrd")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -118, -20, -4)
-
-[node name="pillar_decorated11" parent="." instance=ExtResource("14_ndgrd")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -118, -20, 4)
-
-[node name="pillar_decorated12" parent="." instance=ExtResource("14_ndgrd")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -114, -20, 4)
-
-[node name="pillar_decorated13" parent="." instance=ExtResource("14_ndgrd")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -114, -20, -4)
-
-[node name="pillar_decorated14" parent="." instance=ExtResource("14_ndgrd")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -110, -20, -4)
-
-[node name="pillar_decorated15" parent="." instance=ExtResource("14_ndgrd")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -110, -20, 4)
-
 [node name="pillar_decorated3" parent="." instance=ExtResource("14_ndgrd")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -94, -16, 4)
 
@@ -2555,6 +2538,7 @@ parameters/looping = true
 
 [node name="ThemeBoss" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("39_ghfw4")
+volume_db = -5.0
 parameters/looping = true
 
 [node name="ThemeMenu" type="AudioStreamPlayer" parent="."]
@@ -2610,6 +2594,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -11)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -160.5, -9.5, 11)
 shape = SubResource("BoxShape3D_6bdx5")
+
+[node name="PillarDecorated" parent="." instance=ExtResource("46_qthv2")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -114, -20, -4)
+
+[node name="PillarDecorated3" parent="." instance=ExtResource("46_qthv2")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -118, -20, -4)
+
+[node name="PillarDecorated2" parent="." instance=ExtResource("46_qthv2")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -110, -20, -4)
+
+[node name="PillarDecorated4" parent="." instance=ExtResource("46_qthv2")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -114, -20, 4)
+
+[node name="PillarDecorated5" parent="." instance=ExtResource("46_qthv2")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -110, -20, 4)
+
+[node name="PillarDecorated6" parent="." instance=ExtResource("46_qthv2")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -118, -20, 4)
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_boss_zone_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_boss_zone_body_exited"]
