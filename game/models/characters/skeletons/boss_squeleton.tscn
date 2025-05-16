@@ -1,0 +1,152 @@
+[gd_scene load_steps=12 format=3 uid="uid://bh6h15x537wbk"]
+
+[ext_resource type="Script" uid="uid://ctolnvntjntni" path="res://lib/squeleton_minion.gd" id="1_3pksd"]
+[ext_resource type="PackedScene" uid="uid://bkaolpcf7fbte" path="res://models/characters/skeletons/Skeleton_Warrior.tscn" id="2_3pksd"]
+[ext_resource type="Texture2D" uid="uid://b2oif06pqupm1" path="res://assets/UI/kenney_ui-pack-adventure/Vector/minimap_icon_star_red.svg" id="3_3pksd"]
+[ext_resource type="FontFile" uid="uid://qrj2h620hcb3" path="res://assets/Fonts/Marcellus/Marcellus-Regular.ttf" id="4_vo6hq"]
+[ext_resource type="Script" uid="uid://dedjqe010p0r1" path="res://lib/progress_bar.gd" id="5_78khv"]
+[ext_resource type="Texture2D" uid="uid://dlqhcwc6dirtw" path="res://assets/UI/kenney_ui-pack-adventure/Vector/round_grey.svg" id="6_8h1p8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5w3kd"]
+size = Vector3(1.32959, 2.15601, 0.931885)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rludu"]
+size = Vector3(1, 1, 1.31139)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rludu"]
+viewport_path = NodePath("Sprite3D2/HealthBarViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfd2g"]
+bg_color = Color(0.393086, 0.393086, 0.393085, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rludu"]
+bg_color = Color(0.607843, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 20
+
+[node name="Boss" type="CharacterBody3D"]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
+collision_layer = 17
+script = ExtResource("1_3pksd")
+spawn_type = 1
+health = 750
+attack_damage = 50
+level = 10
+gain_experience = 1000
+
+[node name="Skeleton" parent="." instance=ExtResource("2_3pksd")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0202637, 1.07385, 0.00283027)
+shape = SubResource("BoxShape3D_5w3kd")
+
+[node name="AttackArea" type="Area3D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.881132, 0.354774)
+shape = SubResource("BoxShape3D_rludu")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(-30, 4.52987e-06, -1.98007e-13, 0, -1.31134e-06, -30, -4.52987e-06, -30, 1.31134e-06, 0, 63.2025, 0)
+layers = 512
+texture = ExtResource("3_3pksd")
+
+[node name="Sprite3D2" type="Sprite3D" parent="."]
+texture = SubResource("ViewportTexture_rludu")
+
+[node name="HealthBarViewport" type="SubViewport" parent="Sprite3D2"]
+transparent_bg = true
+size = Vector2i(360, 522)
+
+[node name="HealthBar" type="Control" parent="Sprite3D2/HealthBarViewport"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="Sprite3D2/HealthBarViewport/HealthBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 15.0
+offset_right = -50.0
+offset_bottom = 45.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_vo6hq")
+theme_override_styles/background = SubResource("StyleBoxFlat_rfd2g")
+theme_override_styles/fill = SubResource("StyleBoxFlat_rludu")
+value = 50.0
+rounded = true
+script = ExtResource("5_78khv")
+
+[node name="Label" type="Label" parent="Sprite3D2/HealthBarViewport/HealthBar/ProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_vo6hq")
+theme_override_font_sizes/font_size = 15
+
+[node name="TextureRect" type="TextureRect" parent="Sprite3D2/HealthBarViewport/HealthBar"]
+layout_mode = 1
+anchors_preset = -1
+offset_top = 7.5
+offset_right = 50.0
+offset_bottom = 57.5
+texture = ExtResource("6_8h1p8")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Sprite3D2/HealthBarViewport/HealthBar/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.608986, 1.63645e-06, 4.33177e-07, 1)
+theme_override_colors/font_shadow_color = Color(0.607843, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.607843, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_vo6hq")
+theme_override_font_sizes/font_size = 15
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." groups=["enemy"]]
+collision_layer = 2
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" groups=["enemy"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0202637, 1.07385, 0.00283027)
+shape = SubResource("BoxShape3D_5w3kd")

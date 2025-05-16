@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://re0s6jd8s4q5"]
+[gd_scene load_steps=32 format=3 uid="uid://re0s6jd8s4q5"]
 
 [ext_resource type="Script" uid="uid://cpymjpg25v0ol" path="res://lib/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://dhba8oc01ecnt" path="res://scenes/player.tscn" id="1_o5qli"]
@@ -15,8 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://1dwq5hqi11hv" path="res://assets/textures/white.png" id="9_jkv2x"]
 [ext_resource type="Texture2D" uid="uid://27tm2ht5wuwn" path="res://assets/UI/kenney_ui-pack-adventure/PNG/Default/banner_classic_curtain.png" id="10_trceg"]
 [ext_resource type="Texture2D" uid="uid://big4ck56qnkgu" path="res://assets/UI/kenney_ui-pack-adventure/Vector/round_damaged_brown.svg" id="12_jkv2x"]
-[ext_resource type="Texture2D" uid="uid://0xybxw8aw6np" path="res://assets/UI/coeur_plein.png" id="13_jbj1t"]
-[ext_resource type="Texture2D" uid="uid://08h4es14a00p" path="res://assets/UI/coeur_vide.png" id="14_muem4"]
+[ext_resource type="Script" uid="uid://dedjqe010p0r1" path="res://lib/progress_bar.gd" id="13_pm3ni"]
 [ext_resource type="Texture2D" uid="uid://dmbji4wmtwgoe" path="res://assets/UI/ChatGPT Image 14 mai 2025, 11_08_27.png" id="15_pm3ni"]
 [ext_resource type="Texture2D" uid="uid://baem5c35hmp1t" path="res://assets/UI/ChatGPT Image 14 mai 2025, 11_08_32.png" id="16_y6deb"]
 [ext_resource type="Texture2D" uid="uid://bslvngkckf3nq" path="res://assets/UI/SCR-20250514-jcrh.jpeg" id="18_jscy8"]
@@ -58,6 +57,19 @@ corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jscy8"]
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pm3ni"]
+bg_color = Color(4.33177e-06, 0.727567, 0.103732, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jbj1t"]
 shader = ExtResource("8_a8y0u")
@@ -328,6 +340,26 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_og1vs")
 value = 50.0
 rounded = true
 show_percentage = false
+script = ExtResource("13_pm3ni")
+
+[node name="Label" type="Label" parent="HUD/ExpBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_ya4ey")
+theme_override_font_sizes/font_size = 20
 
 [node name="HealthControl" type="Control" parent="HUD"]
 anchors_preset = 0
@@ -335,171 +367,20 @@ offset_top = 128.0
 offset_right = 264.0
 offset_bottom = 1080.0
 
-[node name="Heath_Full1" type="TextureRect" parent="HUD/HealthControl"]
+[node name="ProgressBar" type="ProgressBar" parent="HUD/HealthControl"]
 layout_mode = 0
-offset_top = 8.0
-offset_right = 128.0
-offset_bottom = 120.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Empty1" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 8.0
-offset_right = 128.0
-offset_bottom = 120.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty2" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 128.0
-offset_right = 128.0
-offset_bottom = 240.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty3" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 248.0
-offset_right = 128.0
-offset_bottom = 360.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty4" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 368.0
-offset_right = 128.0
-offset_bottom = 480.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty5" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 488.0
-offset_right = 128.0
-offset_bottom = 600.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty6" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 608.0
-offset_right = 128.0
-offset_bottom = 720.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty7" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 728.0
-offset_right = 128.0
-offset_bottom = 840.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty8" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_left = 136.0
-offset_top = 8.0
-offset_right = 264.0
-offset_bottom = 120.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty9" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_left = 136.0
-offset_top = 128.0
-offset_right = 264.0
-offset_bottom = 240.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Empty10" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_left = 136.0
-offset_top = 248.0
-offset_right = 264.0
-offset_bottom = 360.0
-texture = ExtResource("14_muem4")
-expand_mode = 2
-
-[node name="Heath_Full2" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 248.0
-offset_right = 128.0
-offset_bottom = 360.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Full3" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 128.0
-offset_right = 128.0
-offset_bottom = 240.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Full4" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 368.0
-offset_right = 128.0
-offset_bottom = 480.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Full5" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 488.0
-offset_right = 128.0
-offset_bottom = 600.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Full6" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 608.0
-offset_right = 128.0
-offset_bottom = 720.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Full7" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_top = 728.0
-offset_right = 128.0
-offset_bottom = 840.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Full8" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_left = 136.0
-offset_top = 8.0
-offset_right = 264.0
-offset_bottom = 120.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Full9" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_left = 136.0
-offset_top = 128.0
-offset_right = 264.0
-offset_bottom = 240.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
-
-[node name="Heath_Full10" type="TextureRect" parent="HUD/HealthControl"]
-layout_mode = 0
-offset_left = 136.0
-offset_top = 248.0
-offset_right = 264.0
-offset_bottom = 360.0
-texture = ExtResource("13_jbj1t")
-expand_mode = 2
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 104.0
+offset_bottom = 514.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("8_ya4ey")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/background = SubResource("StyleBoxFlat_jscy8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_pm3ni")
+value = 60.0
+fill_mode = 3
 
 [node name="FoodControl" type="Control" parent="HUD"]
 anchors_preset = 0

@@ -2,20 +2,25 @@ class_name Squeleton_Minion
 extends CharacterBody3D
 
 @export var skeleton_id: String
-@export var spawn_type: String = "ground" # "ground" ou "awaken"
+enum SpawnType { GROUND, AWAKEN }
+@export var spawn_type: SpawnType = SpawnType.GROUND
 @export var health: int = 100
-@export var attack_damage: int = 1
+@export var attack_damage: int = 5
 @export var level: int = 1
 @export var detection_radius: float = 10.0
-@export var awaken_detection_radius: float = 20.0
-@export var attack_radius: float = 1.5
+@export var gain_experience: int = 10
+@export var awaken_detection_radius: float = 15.0
+@export var attack_radius: float = 1.2
 @export var move_speed: float = 2.5
 
-@onready var anim_tree = $Skeleton_Minion/AnimationTree
-@onready var anim_player = $Skeleton_Minion/AnimationPlayer
+@onready var anim_tree = $Skeleton/AnimationTree
+@onready var anim_player = $Skeleton/AnimationPlayer
 @onready var player = GameState.player
 
+
+@onready var info_top: Sprite3D = $Sprite3D2
 @onready var health_bar: ProgressBar = $Sprite3D2/HealthBarViewport/HealthBar/ProgressBar
+@onready var level_label: Label = $Sprite3D2/HealthBarViewport/HealthBar/TextureRect/Label
 
 
 
@@ -27,6 +32,8 @@ var is_attacking = false
 var has_spawned = false
 
 func _ready():
+	level_label.text = str(level)
+	info_top.visible = false
 	# set la max value de la bar en fonction de la health
 	health_bar.max_value = health
 	health_bar.value = health
@@ -37,9 +44,9 @@ func _ready():
 	attack_area.monitoring = false
 	attack_area.body_entered.connect(_on_attack_area_hit)
 
-	if spawn_type == "ground":
-		$Skeleton_Minion.visible = false
-	elif spawn_type == "awaken":
+	if spawn_type == SpawnType.GROUND:
+		$Skeleton.visible = false
+	elif spawn_type == SpawnType.AWAKEN:
 		anim_tree.set("parameters/inactive/transition_request", "true")
 
 func _physics_process(delta):
@@ -51,19 +58,20 @@ func _physics_process(delta):
 	# Activation du squelette
 	if not is_active and dist < awaken_detection_radius:
 		is_active = true
-		if spawn_type == "awaken":
+		if spawn_type == SpawnType.AWAKEN:
 			anim_tree.set("parameters/inactive/transition_request", "false")
 			anim_tree.set("parameters/awaken_floor/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 			# wait 2.3
 			await get_tree().create_timer(2.3).timeout
 			has_spawned = true
-		elif spawn_type == "ground":
-			$Skeleton_Minion.visible = true
+			info_top.visible = true
+		elif spawn_type == SpawnType.GROUND:
+			$Skeleton.visible = true
 			anim_tree.set("parameters/spawn_ground/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 			# wait 3.5667
 			await get_tree().create_timer(3.5667).timeout
 			has_spawned = true
-
+			info_top.visible = true
 	if is_active and dist < detection_radius:
 		if player.dead == true:
 			anim_tree.set("parameters/movements/transition_request", "idle")
@@ -96,7 +104,6 @@ func _physics_process(delta):
 
 
 func attack():
-	print('is_attacking', is_attacking)
 	if is_attacking:
 		return
 
@@ -121,15 +128,22 @@ func _on_attack_area_hit(body: Node):
 
 
 func take_damage(amount: int):
+
 	if is_dead: return
 	health -= amount
 	health_bar.value = health
 	if health <= 0:
+		if skeleton_id == "boss":
+			GameState.boss_killed = true
+		if skeleton_id == "boss_castle":
+			GameState.is_castle_completed = true
 		die()
 
 func die():
 	is_dead = true
-	anim_tree.set("parameters/die/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+
+	anim_tree.set("parameters/die/transition_request", "true")
+	player.gain_experience(gain_experience)
 	await get_tree().create_timer(2.5).timeout
 	GameState.killed_ids.append(skeleton_id)
 	queue_free()

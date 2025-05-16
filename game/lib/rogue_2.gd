@@ -44,7 +44,6 @@ func _ready() -> void:
 	move_start_position = global_position # Initialiser au début
 
 func _on_player_interaction_detected(node: Node3D) -> void:
-	print("interaction detected")
 	if node == self:
 		if not main_scene.disussion_box.visible:
 			main_scene.label_infos.text = "Appuyez sur E pour parler"

@@ -44,6 +44,7 @@ var current_level_change = null
 
 
 @onready var health_container:Control = $HUD/HealthControl
+@onready var health_bar:ProgressBar = $HUD/HealthControl/ProgressBar
 
 
 
@@ -78,21 +79,13 @@ func _ready() -> void:
 
 	level_hud.text = str(GameState.level)
 	exp_bar.value = GameState.experience
+	exp_bar.max_value = GameState.experience_to_next_level
 	_update_health_display()
 
 func _update_health_display() -> void:
-	# Afficher les cœurs en fonction du niveau maximum actuel
-	for i in range(1, 11):  # On parcourt tous les cœurs possibles (1 à 10)
-		var full_heart = health_container.get_node("Heath_Full" + str(i)) as TextureRect
-		var empty_heart = health_container.get_node("Heath_Empty" + str(i)) as TextureRect
-		
-		if full_heart and empty_heart:
-			if i <= GameState.max_hearth:  # Si le cœur est débloqué
-				full_heart.visible = i <= GameState.current_hearth
-				empty_heart.visible = i > GameState.current_hearth
-			else:  # Si le cœur n'est pas encore débloqué
-				full_heart.visible = false
-				empty_heart.visible = false
+	if health_bar:
+		health_bar.max_value = GameState.max_health
+		health_bar.value = GameState.current_health
 
 func _unhandled_input(event: InputEvent) -> void:
 	if(not get_tree().paused):
@@ -130,10 +123,13 @@ func _on_button_quit_pressed() -> void:
 
 
 func _on_player_interaction_detected(node: Node3D) -> void:
-	if(node.get_parent() is LevelChange):
+	print(node)
+	# print ce qu'il y a dans node
+	print(node.get_parent())
+	if(node is LevelChange):
 		text_info.visible = true
 		label_infos.text = "Appuyez sur E pour ouvrir la porte"
-		current_level_change = node.get_parent()
+		current_level_change = node
 
 
 func _on_player_interaction_released(node: Node3D) -> void:

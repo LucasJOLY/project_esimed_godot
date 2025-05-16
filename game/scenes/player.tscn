@@ -1,8 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://dhba8oc01ecnt"]
+[gd_scene load_steps=18 format=3 uid="uid://dhba8oc01ecnt"]
 
 [ext_resource type="Script" uid="uid://bwmwq2jnjq8jf" path="res://lib/player.gd" id="1_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://bwnpe7b1ytpxu" path="res://models/characters/little_warrior/knight.tscn" id="2_g2els"]
 [ext_resource type="Texture2D" uid="uid://b5ydbl4w4dan5" path="res://assets/UI/kenney_ui-pack-adventure/Vector/minimap_arrow_a.svg" id="3_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://bi6fofwnjja5i" path="res://assets/sound/jump.wav" id="4_dqkch"]
+[ext_resource type="AudioStream" uid="uid://bblsqw1kpgaxy" path="res://assets/sound/footstep.wav" id="5_qlg0r"]
+[ext_resource type="AudioStream" uid="uid://chqdj1msrmsck" path="res://assets/sound/drink_potion.wav" id="6_3v2ag"]
+[ext_resource type="AudioStream" uid="uid://ndi5djjdb128" path="res://assets/sound/eat.wav" id="7_jej6c"]
+[ext_resource type="AudioStream" uid="uid://bi318jsrs1n3h" path="res://assets/sound/collect_item2.mp3" id="8_f1ej7"]
+[ext_resource type="AudioStream" uid="uid://cn124g2jfukc6" path="res://assets/sound/swoosh_1.wav" id="9_oprun"]
+[ext_resource type="AudioStream" uid="uid://cofmjmaxofx7x" path="res://assets/sound/block_hit.wav" id="10_a8ls1"]
+[ext_resource type="AudioStream" uid="uid://bskebvyxm883e" path="res://assets/sound/die.mp3" id="11_qfm1y"]
+[ext_resource type="AudioStream" uid="uid://dsc6bae02vmwv" path="res://assets/sound/level_up.wav" id="12_fulsm"]
+[ext_resource type="AudioStream" uid="uid://cxv8akvhw8mk3" path="res://assets/sound/new_item_chest.wav" id="13_jej6c"]
+[ext_resource type="AudioStream" uid="uid://djasrufuk8idp" path="res://assets/sound/squeleton take damage.wav" id="14_f1ej7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g2els"]
 size = Vector3(0.912704, 1.74841, 0.729553)
@@ -53,5 +64,50 @@ transform = Transform3D(-30, 4.52987e-06, -1.98007e-13, 0, -1.31134e-06, -30, -4
 layers = 512
 texture = ExtResource("3_qhqgy")
 
-[connection signal="body_entered" from="AttackArea" to="." method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="AttackArea" to="." method="_on_area_3d_body_exited"]
+[node name="CollisionItemArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.15261)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionItemArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.998657, -0.862897)
+shape = SubResource("BoxShape3D_qhqgy")
+
+[node name="JumpSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_dqkch")
+volume_db = -10.0
+max_db = -10.0
+
+[node name="WalkSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_qlg0r")
+volume_db = -10.0
+max_db = -10.0
+
+[node name="DrinkSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_3v2ag")
+
+[node name="EatSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("7_jej6c")
+
+[node name="CollectSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("8_f1ej7")
+
+[node name="AttackSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("9_oprun")
+
+[node name="BlockSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("10_a8ls1")
+
+[node name="DeathSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("11_qfm1y")
+
+[node name="LevelUpSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("12_fulsm")
+
+[node name="NewItemSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("13_jej6c")
+
+[node name="SqueletonHitSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("14_f1ej7")
+
+[connection signal="body_entered" from="CollisionItemArea" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="CollisionItemArea" to="." method="_on_area_3d_body_exited"]

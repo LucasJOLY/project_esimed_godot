@@ -10,6 +10,10 @@ extends Node3D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
+@onready var open_door_sound: AudioStreamPlayer3D = $OpenDoorSound
+@onready var close_door_sound: AudioStreamPlayer3D = $CloseDoorSound
+
+
 @onready var main_scene: Node3D = get_tree().root.get_node("Main")
 @onready var message_timer: Timer = Timer.new()
 
@@ -24,7 +28,6 @@ func _ready():
 
 func _on_player_interaction_detected(node: Node3D):
 	if node == self:
-		print("player in range")
 		player_in_range = true
 		main_scene.text_info.visible = true
 		main_scene.label_infos.text = open_text if !is_open else closed_text
@@ -53,9 +56,13 @@ func _process(_delta):
 
 func open_door():
 	animation_player.play("open_door")
+	open_door_sound.play()
+	close_door_sound.stop()
 	is_open = true
 
 
 func close_door():
 	animation_player.play("close_door")
+	open_door_sound.stop()
+	close_door_sound.play()
 	is_open = false

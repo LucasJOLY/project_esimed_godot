@@ -53,6 +53,7 @@ func _on_timer_timeout():
 func open_chest():
 	if not is_open:
 		animation_player.play("open")
+		player.play_new_item_sound()
 		is_open = true
 		main_scene.label_infos.text = obtained_text + item_name
 		main_scene.text_info.visible = true
@@ -69,13 +70,13 @@ func open_chest():
 		
 		# Démarrer le timer
 		timer.start()
+
 		
 		# Sauvegarder l'état de l'objet
 		GameState.set(item_variable, true)
 		
 
 func _on_player_interaction_detected(node: Node3D) -> void:
-	print("interaction detected")
 	if node == self and not is_open:
 		main_scene.label_infos.text = interaction_text
 		main_scene.text_info.visible = true

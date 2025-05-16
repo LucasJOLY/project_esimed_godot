@@ -1,6 +1,8 @@
-[gd_scene load_steps=16 format=4 uid="uid://clpa0p8c8p33j"]
+[gd_scene load_steps=18 format=4 uid="uid://clpa0p8c8p33j"]
 
 [ext_resource type="Texture2D" uid="uid://tbwqttixtc6n" path="res://models/architecture/castle/buildings/neutral/hexagons_medieval.png" id="1_idwb8"]
+[ext_resource type="AudioStream" uid="uid://cm1706xy150yd" path="res://assets/sound/creaky-wooden-gate-opens-170210.mp3" id="2_gtvje"]
+[ext_resource type="AudioStream" uid="uid://c8lyror8iiunw" path="res://assets/sound/wood-gate-closes-170209.mp3" id="3_8o4sg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oydyj"]
 resource_name = "hexagons_medieval"
@@ -307,3 +309,9 @@ shape = SubResource("ConcavePolygonShape3D_v8a3n")
 libraries = {
 &"": SubResource("AnimationLibrary_8o4sg")
 }
+
+[node name="OpenDoorSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_gtvje")
+
+[node name="CloseDoorSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_8o4sg")

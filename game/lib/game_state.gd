@@ -1,7 +1,7 @@
 extends Node
 
 
-var current_level: Level_1
+var current_level: Level
 
 var current_level_key: String = "level_1"
 
@@ -15,6 +15,11 @@ var has_graveyard_key: bool = false
 
 var has_graveyard_key_2: bool = false
 
+
+var has_graveyard_key_3: bool = false
+
+
+var boss_killed: bool = false
 
 
 
@@ -42,12 +47,11 @@ var experience: int = 0
 var experience_to_next_level: int = 100  # XP nécessaire pour passer au niveau suivant
 
 var attack_power: int = 10
-var defense_power: int = 5
-var max_hearth: int = 5
+var max_health: int = 100
 
 
 
-var current_hearth: int = 5
+var current_health: int = 100
 
 
 
@@ -60,6 +64,7 @@ func reset_game():
 	has_castle_key_2 = false
 	has_graveyard_key = false
 	has_graveyard_key_2 = false
+	has_graveyard_key_3 = false
 	collected_items = []
 	bottle_count = 0
 	food_count = 0
@@ -70,7 +75,6 @@ func reset_game():
 	experience = 0
 	experience_to_next_level = 100
 	attack_power = 10
-	defense_power = 5
-	max_hearth = 5
-	current_hearth = 5
+	max_health = 100
+	current_health = 100
 	is_castle_completed = false

@@ -25,10 +25,49 @@ var mouse_captured:bool = false
 @onready var small_shield = $"Knight/Rig/Skeleton3D/Round_Shield"
 
 
-@onready var small_sword_area = $"Knight/Rig/Skeleton3D/1H_Sword/SwordArea"
-@onready var big_sword_area = $"Knight/Rig/Skeleton3D/2H_Sword/SwordArea"
+
+
+
+@onready var jump_sound: AudioStreamPlayer3D = $JumpSound
+@onready var walk_sound: AudioStreamPlayer3D = $WalkSound
+
+#Collect sound
+@onready var collect_sound: AudioStreamPlayer3D = $CollectSound
+
+#New item sound
+@onready var new_item_sound: AudioStreamPlayer3D = $NewItemSound
+
+#Attack sound
+@onready var attack_sound: AudioStreamPlayer3D = $AttackSound
+
+#Block sound
+@onready var block_sound: AudioStreamPlayer3D = $BlockSound
+
+#Drink sound
+@onready var drink_sound: AudioStreamPlayer3D = $DrinkSound
+
+#Eat sound
+@onready var eat_sound: AudioStreamPlayer3D = $EatSound
+
+#Level up sound
+@onready var level_up_sound: AudioStreamPlayer3D = $LevelUpSound
+
+#Death sound
+@onready var death_sound: AudioStreamPlayer3D = $DeathSound
+
+
+#Squeleton hit sound
+@onready var squeleton_hit_sound: AudioStreamPlayer3D = $SqueletonHitSound
+
+
+
+
+
 
 @onready var main_scene: Node3D = get_tree().root.get_node("Main")
+
+
+@onready var attack_area: Area3D = $AttackArea
 
 
 
@@ -37,21 +76,21 @@ var dead:bool = false
 func _ready():
 	dead = false
 	anim_tree.set("parameters/death/transition_request", "false")
-	if(GameState.has_big_sword):
-		big_sword_area.monitoring = false
-		big_sword_area.body_entered.connect(_on_sword_hit)
-	else:
-		small_sword_area.monitoring = false
-		small_sword_area.body_entered.connect(_on_sword_hit)
+	attack_area.monitoring = false
+	attack_area.body_entered.connect(_on_attack_area_hit)
 	capture_mouse()
 
-func _on_sword_hit(body: Node):
-	print("sword hit")
-	if body.collision_layer == 5: # Layer 2 pour les ennemis
-		print("enemie hit")
-		if body.has_method("take_damage"):
-			body.take_damage(GameState.attack_power)
+func _on_attack_area_hit(body: Node):
+	var root = null
+	if body and body.is_in_group("enemy"):
+		root = body.get_parent()
 
+		if root != null and root.has_method("take_damage"):
+			var amount = GameState.attack_power
+			if GameState.has_big_sword:
+				amount = GameState.attack_power * 1.5
+			root.take_damage(amount)
+			squeleton_hit_sound.play()
 
 
 func capture_mouse() -> void:
@@ -63,26 +102,32 @@ func release_mouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	mouse_captured = false
 
+func play_attack_sound() -> void:
+	await get_tree().create_timer(0.55).timeout  # attendre avant d'activer (calé avec l'animation)
+	attack_sound.play()
+
+func play_new_item_sound() -> void:
+	collect_sound.play()
+	await get_tree().create_timer(0.55).timeout  # attendre avant d'activer (calé avec l'animation)
+	new_item_sound.play()
+
 
 
 func _unhandled_input(event):
+	var is_attacking = anim_tree.get("parameters/attack/active") == true
 	if event is InputEventMouseMotion and mouse_captured and dead == false:
 		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 		camera.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
 		camera.rotation.x = clampf(camera.rotation.x, -MAX_CAMERA_ANGLE_UP, MAX_CAMERA_ANGLE_DOWN)
 
-	if Input.is_action_just_pressed("player_attack") and dead == false:
+	if Input.is_action_just_pressed("player_attack") and dead == false and is_attacking == false:
+		play_attack_sound()
 		anim_tree.set("parameters/attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-		if(GameState.has_big_sword):
-			await get_tree().create_timer(0.3).timeout  # attendre avant d'activer (calé avec l'animation)
-			big_sword_area.monitoring = true
-			await get_tree().create_timer(0.2).timeout  # temps de frappe actif
-			big_sword_area.monitoring = false
-		else:
-			await get_tree().create_timer(0.3).timeout  # attendre avant d'activer (calé avec l'animation)
-			small_sword_area.monitoring = true
-			await get_tree().create_timer(0.2).timeout  # temps de frappe actif
-			small_sword_area.monitoring = false
+		await get_tree().create_timer(0.55).timeout  # attendre avant d'activer (calé avec l'animation)
+		attack_area.monitoring = true
+		await get_tree().create_timer(0.2).timeout  # temps de frappe actif
+		attack_area.monitoring = false
+
 
 	if Input.is_action_just_pressed("player_block") and dead == false:
 		var current_state = anim_tree.get("parameters/is_blocking/current_state")
@@ -117,6 +162,7 @@ func _physics_process(delta: float) -> void:
 
 	# Déclenche le saut uniquement si on est au sol
 	if Input.is_action_just_pressed("player_jump") and is_on_floor() and dead == false:
+		jump_sound.play()
 		velocity.y = JUMP_VELOCITY
 
 	# Mouvement horizontal
@@ -150,7 +196,7 @@ func _physics_process(delta: float) -> void:
 			var collision = get_slide_collision(index)
 			var collider = collision.get_collider()
 			if collider != null and collider.is_in_group("stairs"):
-				velocity.y = 1.5
+				velocity.y = 1.7
 	else:
 		# Freinage progressif
 		velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -159,6 +205,8 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		anim_tree.set("parameters/in_air/transition_request", "false")
 		if(input_dir.x != 0 or input_dir.y != 0) and can_move:
+			if walk_sound.playing == false:
+				walk_sound.play()
 			if input_dir.y > 0:  # Si on va vers l'arrière
 				anim_tree.set("parameters/movements/transition_request", "walk_backward")
 			else:
@@ -184,14 +232,16 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 func use_item(item: String) -> void:
 	if item == "bottle":
 		if GameState.bottle_count > 0:
-			GameState.current_hearth = GameState.max_hearth
+			drink_sound.play()
+			GameState.current_health = GameState.max_health
 			GameState.bottle_count -= 1	
 			main_scene._update_health_display()
 			main_scene.handle_hud()
 	elif item == "food":
 		if GameState.food_count > 0:
+			eat_sound.play()
 			GameState.food_count -= 1
-			GameState.current_hearth += 1
+			GameState.current_health += 20
 			main_scene._update_health_display()
 			main_scene.handle_hud()
 	anim_tree.set("parameters/use_item/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
@@ -204,11 +254,15 @@ func interract_with_item() -> void:
 func take_damage(amount: int) -> void:
 	var is_blocking = anim_tree.get("parameters/is_blocking/current_state") == "true"
 	if is_blocking:
+		block_sound.play()
 		return;
-	GameState.current_hearth -= amount
+	if(GameState.has_big_shield):
+		GameState.current_health -= amount / 1.5
+	else:
+		GameState.current_health -= amount
 	main_scene._update_health_display()
-	if GameState.current_hearth <= 0:
-		GameState.current_hearth = 0
+	if GameState.current_health <= 0:
+		GameState.current_health = 0
 		die()
 
 
@@ -216,12 +270,14 @@ func take_damage(amount: int) -> void:
 func die() -> void:
 	dead = true
 	anim_tree.set("parameters/death/transition_request", "true")
+	death_sound.play()
 	release_mouse()
 	main_scene.death_screen.visible = true
 	main_scene.hud.visible = false
 	
 
 func collect_item() -> void:
+	collect_sound.play()
 	# déclenche l'anim avec un oneshot
 	anim_tree.set("parameters/collect_item/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 	main_scene.handle_hud()
@@ -229,21 +285,27 @@ func collect_item() -> void:
 
 func gain_experience(amount: int) -> void:
 	GameState.experience += amount
-	while GameState.experience >= GameState.experience_to_next_level:
-		main_scene.exp_bar.value = GameState.experience
-		GameState.experience -= GameState.experience_to_next_level
+	main_scene.exp_bar.value = GameState.experience
+	if GameState.experience >= GameState.experience_to_next_level:
 		level_up()
+
 
 
 func level_up() -> void:
 	if GameState.level < GameState.limit_level:
+		level_up_sound.play()
 		main_scene.level_hud.text = str(GameState.level + 1)
-		main_scene.level_up()
 		GameState.level += 1
+		GameState.experience -= GameState.experience_to_next_level
+		main_scene.exp_bar.value = GameState.experience
 		GameState.experience_to_next_level = int(GameState.experience_to_next_level * 1.5)  # XP nécessaire augmente à chaque niveau
+		main_scene.exp_bar.max_value = GameState.experience_to_next_level
 
 		# Bonus de stats équilibrés
-		GameState.attack_power += 2
-		GameState.defense_power += 1
-		GameState.max_hearth += 1
-		GameState.current_hearth = GameState.max_hearth  # Soigne au max à chaque level-up
+		GameState.attack_power += 10
+		GameState.max_health += 50
+		GameState.current_health = GameState.max_health  # Soigne au max à chaque level-up
+
+		main_scene.level_up()
+		if(GameState.experience >= GameState.experience_to_next_level):
+			level_up()

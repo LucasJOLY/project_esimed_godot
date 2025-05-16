@@ -38,7 +38,9 @@ func _process(_delta):
 					break
 		
 		if is_closest:
-			collect_item()
+			var is_collecting = player.anim_tree.get("parameters/collect_item/active") == true
+			if not is_collecting:
+				collect_item()
 
 func _on_timer_timeout():
 	main_scene.text_info.visible = false
