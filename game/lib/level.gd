@@ -101,12 +101,12 @@ func _on_dark_zone_body_exited(body: Node3D) -> void:
 
 
 func _on_dark_zone_2_body_entered(body: Node3D) -> void:
+	actual_sound = "theme_castle"
+	theme_village.stop()
+	theme_graveyard.stop()
+	theme_dungeon.stop()
+	theme_castle.play()
 	if body.name == "Player" && GameState.is_castle_completed == false:
-		actual_sound = "theme_castle"
-		theme_village.stop()
-		theme_graveyard.stop()
-		theme_dungeon.stop()
-		theme_castle.play()
 		target_fog_density = 0.2
 		target_fog_sky_affect = 1.0
 		target_fog_light_energy = 0.1
